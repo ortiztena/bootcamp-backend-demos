@@ -40,10 +40,10 @@ Indica aquí que problemas ves
 - Saca en una consulta cuantos apartamentos hay en España.
 
 ```js
-use("airbnb");
+use("airbnb")
 db.listingsAndReviews.count({
   "address.country": "Spain",
-});
+})
 ```
 
 - Lista los 10 primeros:
@@ -52,7 +52,7 @@ db.listingsAndReviews.count({
   - Ordenados por precio.
 
 ```js
-use("airbnb");
+use("airbnb")
 db.listingsAndReviews
   .find(
     { "address.country": "Spain" },
@@ -65,7 +65,7 @@ db.listingsAndReviews
     }
   )
   .sort({ price: -1 })
-  .limit(10);
+  .limit(10)
 ```
 
 ### Filtrando
@@ -78,34 +78,58 @@ db.listingsAndReviews
 use("airbnb")
 db.listingsAndReviews
   .find(
-    { "address.country":"Spain",
-     beds : {$eq:4},
-          amenities: {
-       $all: ['Wifi']
-    },
-    { _id:0,
-      name:1,
-      beds:1,
-      price:1,
-      "address.government_area":1,
-    })
-  .sort({price:-1})
+    { "address.country": "Spain", beds: { $eq: 4 } },
+    { _id: 0, name: 1, beds: 1, price: 1, "address.government_area": 1 }
+  )
+  .sort({ price: -1 })
   .limit(10)
-
 ```
 
 - Al requisito anterior,hay que añadir que nos gusta la tecnología
   queremos que el apartamento tenga wifi.
 
 ```js
-// Pega aquí tu consulta
+use("airbnb")
+db.listingsAndReviews
+  .find(
+    {
+      $and: [
+        { "address.country": "Spain" },
+        { beds: { $eq: 4 } },
+        { amenities: { $eq: "Wifi" } },
+      ],
+    },
+    { _id: 0, name: 1, beds: 1, price: 1, "address.government_area": 1 }
+  )
+  .sort({ price: -1 })
+  .limit(10)
 ```
 
 - Y bueno, un amigo se ha unido que trae un perro, así que a la query anterior tenemos que
   buscar que permitan mascota _Pets Allowed_
 
 ```js
-// Pega aquí tu consulta
+use("airbnb")
+db.listingsAndReviews
+  .find(
+    {
+      $and: [
+        { "address.country": "Spain" },
+        { beds: { $eq: 4 } },
+        { amenities: { $all: ["Wifi", "Pets allowed"] } },
+      ],
+    },
+    {
+      _id: 0,
+      name: 1,
+      beds: 1,
+      price: 1,
+      "address.government_area": 1,
+      house_rules: 1,
+    }
+  )
+  .sort({ price: -1 })
+  .limit(10)
 ```
 
 ### Operadores lógicos
@@ -114,7 +138,31 @@ db.listingsAndReviews
   el precio nos salga baratito (50 $), y que tenga buen rating de reviews
 
 ```js
-// Pega aquí tu consulta
+use("airbnb")
+db.listingsAndReviews
+  .find({ 
+    $or: [ 
+      { "address.country": "Spain"}, 
+      {"address.country": "Portugal"} 
+    ], 
+    $and: [ 
+      {price: {$lte: 50} }, 
+      {"review_scores.review_scores_rating": {$gte: 90}},
+      { beds: { $eq: 4 } },
+      { amenities: { $all: ["Wifi", "Pets allowed"] } },
+    ]
+  }, 
+  {
+    _id:0,
+    name: 1,
+    beds: 1,
+    "address.country": 1,
+    price: 1,
+    "review_scores.review_scores_rating":1, 
+  },
+  )
+  .sort({price:-1})
+  .limit(10)
 ```
 
 ## Agregaciones
