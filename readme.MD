@@ -175,13 +175,59 @@ db.listingsAndReviews
   - El precio (no queremos mostrar un objeto, sólo el campo de precio)
 
 ```js
-// Pega aquí tu consulta
+use("airbnb")
+db.listingsAndReviews.aggregate(
+[
+    {
+        $match: {
+            'address.country': 'Spain'
+        }
+    },{
+        $addFields: {
+            convertedPrice: { $toInt: "$price" }
+        }
+    },{
+        $project: {
+            _id: 0, 
+            name: 1, 
+            ciudad: '$address.market', 
+            precio: '$convertedPrice'
+        }
+    },{
+        $sort: {
+            precio: -1
+       }
+    }  
+])
 ```
 
 - Queremos saber cuantos alojamientos hay disponibles por pais.
 
 ```js
-// Pega aquí tu consulta
+use("airbnb")
+db.listingsAndReviews.aggregate(
+[
+  {
+    $group: {
+      _id: "$address.country",
+      alojamientos: {
+        $sum: 1
+      }
+    }
+  },
+  {
+    $sort: {
+      alojamientos: -1
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      alojamientos: 1,
+      pais: "$_id"
+    }
+  }
+])
 ```
 
 # Opcional
