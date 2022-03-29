@@ -30,7 +30,10 @@ reviews, esto está sacado de hacer webscrapping.
 les ves a como está almacenada la información?
 
 ```md
-Indica aquí que problemas ves
+  - Carga todas las propiedades del objeto que se van a manejar en memoria.
+  - Saturaríamos la cache de la BBDD.
+  - Ralentizaria mucho el proceso de cada petición.
+  - La web no iría fluida.
 ```
 
 ## Consultas
@@ -235,13 +238,56 @@ db.listingsAndReviews.aggregate(
 - Queremos saber el precio medio de alquiler de airbnb en España.
 
 ```js
-// Pega aquí tu consulta
+use("airbnb")
+db.listingsAndReviews.aggregate(
+[{
+  $match: {
+  'address.country': 'Spain'
+  }
+},{
+  $project: {
+    _id: 0,
+    price: 1,
+    country: '$address.country'
+  }
+},{
+  $group: {
+    _id: 'average_price',
+    count: {
+      $avg: '$price'
+    }
+  }
+}])
 ```
 
 - ¿Y si quisieramos hacer como el anterior, pero sacarlo por paises?
 
 ```js
-// Pega aquí tu consulta
+use("airbnb")
+db.listingsAndReviews.aggregate([
+  {
+    $group: {
+      _id: '$address.country',
+      avg_price: {
+        $avg: '$price'
+      }
+    }
+}, {
+    $addFields: {
+      media: {
+        $toInt: '$avg_price'
+      }
+  }}, {
+    $project: {
+      _id: 0,
+      pais: '$_id',
+      media: 1
+    }
+}, {
+    $sort: {
+      media: -1
+    }
+}])
 ```
 
 - Repite los mismos pasos pero agrupando también por numero de habitaciones.
