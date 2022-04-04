@@ -30,15 +30,37 @@ const toObject = (id, name, surname, gender, email, picture) => ({
   email,
   picture,
 });
+
+const toObject2 = (user) => ({
+  id: user.id,
+  name: user.name,
+  surname: user.surname,
+  gender: user.gender,
+  email: user.email,
+  picture: user.picture,
+});
+
+const fields = (arr, number) => {
+  const att = arr.slice(0, number);
+  return att;
+};
+
+const replyObject = (obj, campos) => {
+  let newObj = {};
+  let arr = [];
+  for (let i of campos) {
+    obj.map((x) => (newObj[i] = x[i]));
+    arr.push(newObj);
+  }
+  return arr;
+};
+
 const excludeCountry = ({ ...others }) => others;
 const lines = data.split("\n");
 const myArr = lines.map((x) => x.split(","));
 const [header, ...users] = myArr;
-const arr = users.map((x) => toObject(...x));
-
-// console.log(fromCSV(data, 3));
-// const getName = ({ name }) => name;
-const excludeField = ({ field, ...others }) => others;
+const final = users.map((x) => toObject(...x));
+// const mapeo = arr.map((x) => toObject2(x));
 
 // hacer split en headers
 // hacer una funcion cdonde pasarle el array resultante, y los usuarios
