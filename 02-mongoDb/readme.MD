@@ -30,10 +30,10 @@ reviews, esto está sacado de hacer webscrapping.
 les ves a como está almacenada la información?
 
 ```md
-  - Carga todas las propiedades del objeto que se van a manejar en memoria.
-  - Saturaríamos la cache de la BBDD.
-  - Ralentizaria mucho el proceso de cada petición.
-  - La web no iría fluida.
+- Carga todas las propiedades del objeto que se van a manejar en memoria.
+- Saturaríamos la cache de la BBDD.
+- Ralentizaria mucho el proceso de cada petición.
+- La web no iría fluida.
 ```
 
 ## Consultas
@@ -43,10 +43,10 @@ les ves a como está almacenada la información?
 - Saca en una consulta cuantos apartamentos hay en España.
 
 ```js
-use("airbnb")
+use("airbnb");
 db.listingsAndReviews.count({
   "address.country": "Spain",
-})
+});
 ```
 
 - Lista los 10 primeros:
@@ -55,7 +55,7 @@ db.listingsAndReviews.count({
   - Ordenados por precio.
 
 ```js
-use("airbnb")
+use("airbnb");
 db.listingsAndReviews
   .find(
     { "address.country": "Spain" },
@@ -68,7 +68,7 @@ db.listingsAndReviews
     }
   )
   .sort({ price: -1 })
-  .limit(10)
+  .limit(10);
 ```
 
 ### Filtrando
@@ -78,47 +78,64 @@ db.listingsAndReviews
   - Dos cuartos de baño.
 
 ```js
-use("airbnb")
+use("airbnb");
 db.listingsAndReviews
   .find(
-    { "address.country": "Spain", beds: { $eq: 4 } },
-    { _id: 0, name: 1, beds: 1, price: 1, "address.government_area": 1 }
+    { "address.country": "Spain", beds: { $eq: 4 }, bathrooms: { $gte: 2 } },
+    {
+      _id: 0,
+      name: 1,
+      beds: 1,
+      price: 1,
+      "address.government_area": 1,
+      bathrooms: 1,
+    }
   )
   .sort({ price: -1 })
-  .limit(10)
+  .limit(10);
 ```
 
 - Al requisito anterior,hay que añadir que nos gusta la tecnología
   queremos que el apartamento tenga wifi.
 
 ```js
-use("airbnb")
+use("airbnb");
 db.listingsAndReviews
   .find(
     {
       $and: [
         { "address.country": "Spain" },
         { beds: { $eq: 4 } },
+        { bathrooms: { $gte: 2 } },
         { amenities: { $eq: "Wifi" } },
       ],
     },
-    { _id: 0, name: 1, beds: 1, price: 1, "address.government_area": 1 }
+    {
+      _id: 0,
+      name: 1,
+      beds: 1,
+      price: 1,
+      "address.government_area": 1,
+      bathrooms: 1,
+      amenities: "Wifi",
+    }
   )
   .sort({ price: -1 })
-  .limit(10)
+  .limit(10);
 ```
 
 - Y bueno, un amigo se ha unido que trae un perro, así que a la query anterior tenemos que
   buscar que permitan mascota _Pets Allowed_
 
 ```js
-use("airbnb")
+use("airbnb");
 db.listingsAndReviews
   .find(
     {
       $and: [
         { "address.country": "Spain" },
         { beds: { $eq: 4 } },
+        { bathrooms: { $gte: 2 } },
         { amenities: { $all: ["Wifi", "Pets allowed"] } },
       ],
     },
@@ -128,11 +145,12 @@ db.listingsAndReviews
       beds: 1,
       price: 1,
       "address.government_area": 1,
-      house_rules: 1,
+      amenities: "Wifi & Pets allowed",
+      bathrooms: 1,
     }
   )
   .sort({ price: -1 })
-  .limit(10)
+  .limit(10);
 ```
 
 ### Operadores lógicos
@@ -141,31 +159,36 @@ db.listingsAndReviews
   el precio nos salga baratito (50 $), y que tenga buen rating de reviews
 
 ```js
-use("airbnb")
+use("airbnb");
 db.listingsAndReviews
-  .find({ 
-    $or: [ 
-      { "address.country": "Spain"}, 
-      {"address.country": "Portugal"} 
-    ], 
-    $and: [ 
-      {price: {$lte: 50} }, 
-      {"review_scores.review_scores_rating": {$gte: 90}},
-      { beds: { $eq: 4 } },
-      { amenities: { $all: ["Wifi", "Pets allowed"] } },
-    ]
-  }, 
-  {
-    _id:0,
-    name: 1,
-    beds: 1,
-    "address.country": 1,
-    price: 1,
-    "review_scores.review_scores_rating":1, 
-  },
+  .find(
+    {
+      $or: [
+        { "address.market": "Barcelona" },
+        { "address.country": "Portugal" },
+      ],
+      $and: [
+        { price: { $lte: 50 } },
+        { "review_scores.review_scores_rating": { $gte: 90 } },
+        { beds: { $eq: 4 } },
+        { bathrooms: { $gte: 2 } },
+        { amenities: { $all: ["Wifi", "Pets allowed"] } },
+      ],
+    },
+    {
+      _id: 0,
+      name: 1,
+      beds: 1,
+      bathrooms: 1,
+      "address.country": 1,
+      "address.market": 1,
+      amenities: "Wifi & Pets allowed",
+      price: 1,
+      "review_scores.review_scores_rating": 1,
+    }
   )
-  .sort({price:-1})
-  .limit(10)
+  .sort({ price: -1 })
+  .limit(10);
 ```
 
 ## Agregaciones
@@ -178,59 +201,60 @@ db.listingsAndReviews
   - El precio (no queremos mostrar un objeto, sólo el campo de precio)
 
 ```js
-use("airbnb")
-db.listingsAndReviews.aggregate(
-[
-    {
-        $match: {
-            'address.country': 'Spain'
-        }
-    },{
-        $addFields: {
-            convertedPrice: { $toInt: "$price" }
-        }
-    },{
-        $project: {
-            _id: 0, 
-            name: 1, 
-            ciudad: '$address.market', 
-            precio: '$convertedPrice'
-        }
-    },{
-        $sort: {
-            precio: -1
-       }
-    }  
-])
+use("airbnb");
+db.listingsAndReviews.aggregate([
+  {
+    $match: {
+      "address.country": "Spain",
+    },
+  },
+  {
+    $addFields: {
+      convertedPrice: { $toInt: "$price" },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      ciudad: "$address.market",
+      precio: "$convertedPrice",
+    },
+  },
+  {
+    $sort: {
+      precio: -1,
+    },
+  },
+]);
 ```
 
 - Queremos saber cuantos alojamientos hay disponibles por pais.
 
 ```js
-use("airbnb")
-db.listingsAndReviews.aggregate(
-[
+use("airbnb");
+db.listingsAndReviews.aggregate([
   {
     $group: {
       _id: "$address.country",
       alojamientos: {
-        $sum: 1
-      }
-    }
+        $sum: 1,
+      },
+    },
   },
   {
     $sort: {
-      alojamientos: -1
-    }
+      alojamientos: -1,
+    },
   },
   {
     $project: {
       _id: 0,
       alojamientos: 1,
-      pais: "$_id"
-    }
-  }
-])
+      pais: "$_id",
+    },
+  },
+]);
 ```
 
 # Opcional
@@ -238,56 +262,64 @@ db.listingsAndReviews.aggregate(
 - Queremos saber el precio medio de alquiler de airbnb en España.
 
 ```js
-use("airbnb")
-db.listingsAndReviews.aggregate(
-[{
-  $match: {
-  'address.country': 'Spain'
-  }
-},{
-  $project: {
-    _id: 0,
-    price: 1,
-    country: '$address.country'
-  }
-},{
-  $group: {
-    _id: 'average_price',
-    count: {
-      $avg: '$price'
-    }
-  }
-}])
+use("airbnb");
+db.listingsAndReviews.aggregate([
+  {
+    $match: {
+      "address.country": "Spain",
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      price: 1,
+      country: "$address.country",
+    },
+  },
+  {
+    $group: {
+      _id: "average_price",
+      count: {
+        $avg: "$price",
+      },
+    },
+  },
+]);
 ```
 
 - ¿Y si quisieramos hacer como el anterior, pero sacarlo por paises?
 
 ```js
-use("airbnb")
+use("airbnb");
 db.listingsAndReviews.aggregate([
   {
     $group: {
-      _id: '$address.country',
+      _id: "$address.country",
       avg_price: {
-        $avg: '$price'
-      }
-    }
-}, {
+        $avg: "$price",
+      },
+    },
+  },
+  {
     $addFields: {
       media: {
-        $toInt: '$avg_price'
-      }
-  }}, {
+        $toInt: "$avg_price",
+      },
+    },
+  },
+  {
     $project: {
       _id: 0,
-      pais: '$_id',
-      media: 1
-    }
-}, {
+      pais: "$_id",
+      media: 1,
+    },
+  },
+  {
     $sort: {
-      media: -1
-    }
-}])
+      media: -1,
+    },
+  },
+]);
 ```
 
 - Repite los mismos pasos pero agrupando también por numero de habitaciones.
