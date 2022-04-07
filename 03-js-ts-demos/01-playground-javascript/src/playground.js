@@ -42,8 +42,8 @@ const myArr = lines.map((x) => x.split(","));
 const [header, ...users] = myArr;
 const final = users.map((x) => toObject(...x));
 
-const officersIds = (obj, field) =>
-  obj.map((officer) => ({ [field]: officer[field] }));
+const userMapper = (obj, field) =>
+  obj.map((user) => ({ [field]: user[field] }));
 
 // hacer split en headers
 // hacer una funcion cdonde pasarle el array resultante, y los usuarios
