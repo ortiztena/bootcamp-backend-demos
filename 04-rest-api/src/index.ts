@@ -1,21 +1,14 @@
 import express from "express";
-import { getHotelsList, getHotelById } from "./mock-db";
+import { hotelsApi } from "./hotels.api";
+import path from "path";
 
 const app = express();
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send(console.log("welcome to the server's home page"));
-});
+// TODO: Feed env variable in production
+app.use("/", express.static(path.resolve(__dirname, "../public")));
 
-app.get("/api/hotels", async (req, res) => {
-  const hotelList = await getHotelsList()
-  res.send(hotelList)
-})
-
-app.get("/api/hotels/:id"), async (req, res) => {
-  const hotelById = await getHotelById(req.params.id)
-  res.send(hotelById)
-}
+app.use("/api/hotels", hotelsApi)
 
 app.listen(3000, () => {
   console.log("server is running on port 3000");

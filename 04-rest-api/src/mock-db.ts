@@ -1,4 +1,4 @@
-const mockHotelsList = [
+let mockHotelsList = [
   {
     _id: "10006546",
     name: "Ribeira Charming Duplex",
@@ -18,12 +18,15 @@ const mockHotelsList = [
     },
     reviews: [
       {
+        _id: "58663741",
         date: { $date: "2016-01-03T05:00:00Z" },
         reviewer_name: "Cátia",
         comments:
           "A casa da Ana e do Gonçalo foram o local escolhido para a passagem de ano com um grupo de amigos. Fomos super bem recebidos com uma grande simpatia e predisposição a ajudar com qualquer coisa que fosse necessário.\r\nA casa era ainda melhor do que parecia nas fotos, totalmente equipada, com mantas, aquecedor e tudo o que pudessemos precisar.\r\nA localização não podia ser melhor! Não há melhor do que acordar de manhã e ao virar da esquina estar a ribeira do Porto.",
       },
       {
+
+        _id: "62413197",
         date: { $date: "2016-02-14T05:00:00Z" },
         reviewer_name: "Théo",
         comments:
@@ -69,12 +72,14 @@ const mockHotelsList = [
     },
     reviews: [
       {
+        _id: "4765259",
         date: { $date: "2013-05-24T04:00:00Z" },
         reviewer_name: "Jacqui",
         comments:
           "Our stay was excellent.  The place had a breath taking view.  David was very accommodating with our hotel stay, parking availability and all of our concerns & questions.  He did above and beyond what anyone would want.  He's a man of his word and very professional.  We highly recommend for everyone to stay in all of the places he recommended.  Thank you David for a accommodating our wonderful and memorable stay in Honolulu, Hawaii.  God Bless!  Henry & Jacqui (SF, CA)",
       },
       {
+        _id: "4908312",
         date: { $date: "2013-06-01T04:00:00Z" },
         reviewer_name: "Khoren",
         comments: "Tell others in the Airbnb community about your stay.",
@@ -88,10 +93,11 @@ export const getHotelsList = async () => {
 };
 
 export const getHotelById = async (id: string) => {
-  return mockHotelsList.find((hotel) => hotel._id === id);
+  return mockHotelsList.find((hotel) => hotel._id == id);
 };
 
 export interface Review {
+  _id: string;
   date: {
     $date: string;
   };
@@ -99,8 +105,27 @@ export interface Review {
   comments: string;
 }
 
-export const newHotelReview = async (id: string, review: Review) => {
-  const hotel = await getHotelById(id);
-  hotel.reviews.push(review);
-  return hotel;
+export const insertHotelReview = async (id: string, review: Review) => {
+  mockHotelsList = mockHotelsList.map((hotel) => {
+    if (hotel._id === id) {
+      if (hotel.reviews.find((x) => x._id === review._id)) {
+        review._id = (Number(review._id) + hotel.reviews.length).toString();
+      }
+      return { ...hotel, reviews: [...hotel.reviews, review] }
+    }
+    else return hotel
+  })
+  return true;
 };
+
+
+// mockHotelsList = mockHotelsList.map((hotel) => hotel._id === id ?
+//   Boolean(hotel.reviews.find((x) => x._id === review._id)) : hotel ?
+//     { ...hotel, reviews: [...hotel.reviews, review] } : hotel);
+
+// const idChecker = (hotel, review: Review) => {
+//   if (hotel.reviews.find((x) => x._id === review._id)) {
+//     review._id = review._id + 1;
+//     return true
+//   }
+// }
