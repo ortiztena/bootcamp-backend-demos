@@ -106,6 +106,7 @@ export interface Review {
 }
 
 export const insertHotelReview = async (id: string, review: Review) => {
+
   mockHotelsList = mockHotelsList.map((hotel) => {
     if (hotel._id === id) {
       if (hotel.reviews.find((x) => x._id === review._id)) {
