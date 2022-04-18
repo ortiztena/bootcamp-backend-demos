@@ -93,38 +93,39 @@ export const db: DB = {
         },
       ],
     },
-  ];
-
-  export const getHotelsList = async () => {
-    return mockHotelsList;
-  };
-
-  export const getHotelById = async (id: string) => {
-    return mockHotelsList.find((hotel) => hotel._id == id);
-  };
-
-  export interface Review {
-    _id: string;
-date: {
-  $date: string;
-};
-reviewer_name: string;
-comments: string;
+  ],
 }
 
-export const insertHotelReview = async (id: string, review: Review) => {
+//   export const getHotelsList = async () => {
+//     return mockHotelsList;
+//   };
 
-  mockHotelsList = mockHotelsList.map((hotel) => {
-    if (hotel._id === id) {
-      if (hotel.reviews.find((x) => x._id === review._id)) {
-        review._id = (Number(review._id) + hotel.reviews.length).toString();
-      }
-      return { ...hotel, reviews: [...hotel.reviews, review] }
-    }
-    else return hotel
-  })
-  return true;
-};
+//   export const getHotelById = async (id: string) => {
+//     return mockHotelsList.find((hotel) => hotel._id == id);
+//   };
+
+//   export interface Review {
+//     _id: string;
+// date: {
+//   $date: string;
+// };
+// reviewer_name: string;
+// comments: string;
+// }
+
+// export const insertHotelReview = async (id: string, review: Review) => {
+
+//   mockHotelsList = mockHotelsList.map((hotel) => {
+//     if (hotel._id === id) {
+//       if (hotel.reviews.find((x) => x._id === review._id)) {
+//         review._id = (Number(review._id) + hotel.reviews.length).toString();
+//       }
+//       return { ...hotel, reviews: [...hotel.reviews, review] }
+//     }
+//     else return hotel
+//   })
+//   return true;
+// };
 
 
 // mockHotelsList = mockHotelsList.map((hotel) => hotel._id === id ?

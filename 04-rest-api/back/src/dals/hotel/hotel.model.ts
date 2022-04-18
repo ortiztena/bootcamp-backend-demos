@@ -23,6 +23,6 @@ export interface Address {
 export interface Review {
     _id: string
     date: string
-    reviewer_name: Date
+    reviewer_name: string
     comments: string
 }
