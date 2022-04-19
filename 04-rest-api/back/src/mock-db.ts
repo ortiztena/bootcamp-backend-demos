@@ -1,4 +1,4 @@
-import { Hotel } from '../hotel/hotel.model';
+import { Hotel } from './dals/';
 
 interface DB {
   hotels: Hotel[];
@@ -96,45 +96,33 @@ export const db: DB = {
   ],
 }
 
-//   export const getHotelsList = async () => {
-//     return mockHotelsList;
-//   };
+export const getHotelsList = async () => {
+  return db.hotels;
+};
 
-//   export const getHotelById = async (id: string) => {
-//     return mockHotelsList.find((hotel) => hotel._id == id);
-//   };
+export const getHotelById = async (id: string) => {
+  return db.hotels.find((hotel) => hotel._id == id);
+};
 
-//   export interface Review {
-//     _id: string;
-// date: {
-//   $date: string;
-// };
-// reviewer_name: string;
-// comments: string;
-// }
+export interface Review {
+  _id: string;
+  date: string;
+  reviewer_name: string;
+  comments: string;
+}
 
-// export const insertHotelReview = async (id: string, review: Review) => {
+export const updateReview = async (id: string, review: Review) => {
 
-//   mockHotelsList = mockHotelsList.map((hotel) => {
-//     if (hotel._id === id) {
-//       if (hotel.reviews.find((x) => x._id === review._id)) {
-//         review._id = (Number(review._id) + hotel.reviews.length).toString();
-//       }
-//       return { ...hotel, reviews: [...hotel.reviews, review] }
-//     }
-//     else return hotel
-//   })
-//   return true;
-// };
+  db.hotels = db.hotels.map((hotel) => {
+    if (hotel._id === id) {
+      if (hotel.reviews.find((x) => x._id === review._id)) {
+        review._id = (Number(review._id) + hotel.reviews.length).toString();
+      }
+      return { ...hotel, reviews: [...hotel.reviews, review] }
+    }
+    else return hotel
+  })
+  return true;
+};
 
 
-// mockHotelsList = mockHotelsList.map((hotel) => hotel._id === id ?
-//   Boolean(hotel.reviews.find((x) => x._id === review._id)) : hotel ?
-//     { ...hotel, reviews: [...hotel.reviews, review] } : hotel);
-
-// const idChecker = (hotel, review: Review) => {
-//   if (hotel.reviews.find((x) => x._id === review._id)) {
-//     review._id = review._id + 1;
-//     return true
-//   }
-// }

@@ -8,7 +8,7 @@ export const dbRepository: HotelRepository = {
     getHotel: async (id: string) => {
         throw new Error("Not implemented");
     },
-    updateReview: async (hotel: Hotel, review: Review) => {
+    updateReview: async (hotel, review) => {
         throw new Error("Not implemented");
     }
 };

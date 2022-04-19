@@ -1,8 +1,8 @@
 import express from "express";
 import { hotelsApi } from "./hotels.api";
 import path from "path";
-import { createRestApiServer } from "./core/servers";
-import { envConstants } from "./core/constants";
+import { createRestApiServer } from "core/servers";
+import { envConstants } from "core/constants";
 
 
 const restApiServer = createRestApiServer();
