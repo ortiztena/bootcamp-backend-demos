@@ -1,6 +1,7 @@
 import { Router } from "express";
 export const hotelsApi = Router();
-import { getHotelById, updateReview } from "./mock-db";
+import { mapHotelListFromModelToApi, mapHotelFromModelToApi, mapHotelFromApiToModel } from "./hotel.mappers";
+import { getHotelsList, getHotelById, updateReview } from "../../mock-db";
 import { hotelRepository } from 'dals';
 
 
@@ -15,17 +16,21 @@ hotelsApi
                 const endIndex = Math.min(startIndex + pageSize, hotelList.length);
                 hotelList = hotelList.slice(startIndex, endIndex);
             }
-            res.send(hotelList)
+            res.send(mapHotelListFromModelToApi(hotelList))
         } catch (error) {
             next(error);
 
         }
 
     })
-    .get('/:id', async (req, res) => {
-        const { id } = req.params;
-        const hotel = await getHotelById(id)
-        res.send(hotel)
+    .get('/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const hotel = await hotelRepository.getHotel(id)
+            res.send(mapHotelFromModelToApi(hotel))
+        } catch (error) {
+            next(error);
+        }
     })
     .put('/:id', async (req, res) => {
         const { id } = req.params;
