@@ -1,8 +1,8 @@
 import { Router } from "express";
 export const hotelsApi = Router();
 import { mapHotelListFromModelToApi, mapHotelFromModelToApi, mapHotelFromApiToModel } from "./hotel.mappers";
-import { getHotelsList, getHotelById, updateReview } from "../../mock-db";
 import { hotelRepository } from 'dals';
+import { paginateHotelList } from './hotel.helpers';
 
 
 hotelsApi
@@ -10,13 +10,10 @@ hotelsApi
         try {
             const page = Number(req.query.page);
             const pageSize = Number(req.query.pageSize);
-            let hotelList = await hotelRepository.getHotelList();
-            if (page && pageSize) {
-                const startIndex = (page - 1) * pageSize;
-                const endIndex = Math.min(startIndex + pageSize, hotelList.length);
-                hotelList = hotelList.slice(startIndex, endIndex);
-            }
-            res.send(mapHotelListFromModelToApi(hotelList))
+            const hotelList = await hotelRepository.getHotelList();
+            const paginatedHotelList = paginateHotelList(hotelList, page, pageSize);
+
+            res.send(mapHotelListFromModelToApi(paginatedHotelList))
         } catch (error) {
             next(error);
 
@@ -32,9 +29,14 @@ hotelsApi
             next(error);
         }
     })
-    .put('/:id', async (req, res) => {
-        const { id } = req.params;
-        const review = req.body;
-        await updateReview(id, review);
-        res.sendStatus(204)
+    .put('/:id', async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const review = req.body
+            await hotelRepository.updateReview(id, review);
+            res.sendStatus(204)
+        } catch (error) {
+            next(error);
+        }
+
     })
