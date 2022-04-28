@@ -1,5 +1,7 @@
+import { ObjectId } from "mongodb"
+
 export interface Hotel {
-    _id: string
+    _id: ObjectId
     name: string
     summary: string
     bedrooms: number

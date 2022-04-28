@@ -1,4 +1,5 @@
 import { Hotel } from './hotel';
+import { ObjectId } from 'mongodb';
 
 interface DB {
     hotels: Hotel[];
@@ -7,7 +8,7 @@ interface DB {
 export const db: DB = {
     hotels: [
         {
-            _id: "10006546",
+            _id: new ObjectId(),
             name: "Ribeira Charming Duplex",
             summary:
                 "Fantastic duplex apartment with three bedrooms, located in the historic area of Porto, Ribeira (Cube) - UNESCO World Heritage Site. Centenary building fully rehabilitated, without losing their original character.",
@@ -42,7 +43,7 @@ export const db: DB = {
             ],
         },
         {
-            _id: "10009999",
+            _id: new ObjectId(),
             name: "Horto flat with small garden",
             summary:
                 "One bedroom + sofa-bed in quiet and bucolic neighbourhood right next to the Botanical Garden. Small garden, outside shower, well equipped kitchen and bathroom with shower and tub. Easy for transport with many restaurants and basic facilities in the area.",
@@ -61,7 +62,7 @@ export const db: DB = {
             reviews: [],
         },
         {
-            _id: "1001265",
+            _id: new ObjectId(),
             name: "Ocean View Waikiki Marina w/prkg",
             summary:
                 "A short distance from Honolulu's billion dollar mall, and the same distance to Waikiki. Parking included. A great location that work perfectly for business, education, or simple visit. Experience Yacht Harbor views and 5 Star Hilton Hawaiian Village.",
