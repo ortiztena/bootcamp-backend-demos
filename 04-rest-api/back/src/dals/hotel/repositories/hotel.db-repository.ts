@@ -1,6 +1,6 @@
 import { HotelRepository } from "./hotel.repository";
 import { ObjectId } from "mongodb";
-import { hotelContext } from "../hotel.contex";
+import { hotelContext } from "../hotel.context";
 import { Hotel, Review } from "../hotel.model";
 
 export const dbRepository: HotelRepository = {
