@@ -1,16 +1,17 @@
-import { ObjectId } from "mongodb"
+import { NumericType } from "mongodb"
 
 export interface Hotel {
-    _id: ObjectId
+    _id: string
     name: string
     summary: string
     bedrooms: number
     beds: number
-    bathrooms: number
+    bathrooms: NumericType
     images: Images
     address: Address
     reviews: Review[]
 }
+
 
 export interface Images {
     picture_url: string
@@ -24,7 +25,7 @@ export interface Address {
 
 export interface Review {
     _id: string
-    date: string
+    date: Date
     reviewer_name: string
     comments: string
 }

@@ -5,20 +5,13 @@ export interface Hotel {
     bedrooms: number
     beds: number
     bathrooms: number
-    images: Images
-    address: Address
+    images: string
+    country: string;
+    street: string;
+    market: string
     reviews: Review[]
 }
 
-export interface Images {
-    picture_url: string
-}
-
-export interface Address {
-    street: string
-    market: string
-    country: string
-}
 
 export interface Review {
     _id: string

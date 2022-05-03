@@ -12,24 +12,23 @@ const addressSchema = new Schema({
 } as SchemaDefinition<Address>)
 
 const reviewSchema = new Schema({
-    _id: { type: Schema.Types.String },
-    date: { type: Schema.Types.String },
-    reviewer_name: { type: Schema.Types.String },
-    comments: { type: Schema.Types.String },
+    _id: { type: Schema.Types.String, required: true },
+    date: { type: Schema.Types.String, required: true },
+    reviewer_name: { type: Schema.Types.String, required: true },
+    comments: { type: Schema.Types.String, required: true },
 } as SchemaDefinition<Review>)
 
 const hotelSchema = new Schema({
-    _id: { type: Schema.Types.ObjectId, required: true },
+    _id: { type: Schema.Types.String, required: true },
     name: { type: Schema.Types.String, required: true },
     summary: { type: Schema.Types.String, required: true },
-    bedrooms: { type: Schema.Types.Number, required: true },
-    beds: { type: Schema.Types.Number, required: true },
-    bathrooms: { type: Schema.Types.Number, required: true },
     images: { type: imagesSchema },
     address: { type: addressSchema },
+    bedrooms: { type: Schema.Types.Number, required: true },
+    beds: { type: Schema.Types.Number, required: true },
+    bathrooms: { type: Schema.Types.Decimal128, required: true },
     reviews: [{ type: reviewSchema }],
-
 } as SchemaDefinition<Hotel>);
 
 
-export const hotelContext = mongoose.model<Hotel>("Hotel", hotelSchema);
+export const hotelContext = mongoose.model<Hotel>("ListingAndReviews", hotelSchema, 'listingsAndReviews');

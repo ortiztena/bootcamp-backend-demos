@@ -8,7 +8,7 @@ interface DB {
 export const db: DB = {
     hotels: [
         {
-            _id: new ObjectId(),
+            _id: "10006546",
             name: "Ribeira Charming Duplex",
             summary:
                 "Fantastic duplex apartment with three bedrooms, located in the historic area of Porto, Ribeira (Cube) - UNESCO World Heritage Site. Centenary building fully rehabilitated, without losing their original character.",
@@ -43,7 +43,7 @@ export const db: DB = {
             ],
         },
         {
-            _id: new ObjectId(),
+            _id: "10009999",
             name: "Horto flat with small garden",
             summary:
                 "One bedroom + sofa-bed in quiet and bucolic neighbourhood right next to the Botanical Garden. Small garden, outside shower, well equipped kitchen and bathroom with shower and tub. Easy for transport with many restaurants and basic facilities in the area.",
@@ -62,7 +62,7 @@ export const db: DB = {
             reviews: [],
         },
         {
-            _id: new ObjectId(),
+            _id: "1001265",
             name: "Ocean View Waikiki Marina w/prkg",
             summary:
                 "A short distance from Honolulu's billion dollar mall, and the same distance to Waikiki. Parking included. A great location that work perfectly for business, education, or simple visit. Experience Yacht Harbor views and 5 Star Hilton Hawaiian Village.",
