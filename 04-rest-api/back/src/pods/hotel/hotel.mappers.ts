@@ -25,7 +25,7 @@ export const mapHotelFromApiToModel = (hotel: apiModel.Hotel): model.Hotel => ({
     bedrooms: hotel.bedrooms,
     beds: hotel.beds,
     bathrooms: hotel.bathrooms,
-    images: hotel.images,
+    images: hotel.images.picture_url,
     address: hotel.address,
     reviews: hotel.reviews,
 });
