@@ -1,6 +1,6 @@
 import { Router } from "express";
 export const hotelsApi = Router();
-import { mapHotelListFromModelToApi, mapHotelFromModelToApi, mapHotelFromApiToModel } from "./hotel.mappers";
+import { mapHotelListFromModelToApi, mapHotelFromModelToApi } from "./hotel.mappers";
 import { hotelRepository } from 'dals';
 import { paginateHotelList } from './hotel.helpers';
 

@@ -13,7 +13,7 @@ const addressSchema = new Schema({
 
 const reviewSchema = new Schema({
     _id: { type: Schema.Types.String, required: true },
-    date: { type: Schema.Types.String, required: true },
+    date: { type: Schema.Types.Date, required: true },
     reviewer_name: { type: Schema.Types.String, required: true },
     comments: { type: Schema.Types.String, required: true },
 } as SchemaDefinition<Review>)
@@ -31,4 +31,4 @@ const hotelSchema = new Schema({
 } as SchemaDefinition<Hotel>);
 
 
-export const hotelContext = mongoose.model<Hotel>("ListingAndReviews", hotelSchema, 'listingsAndReviews');
+export const hotelContext = mongoose.model<Hotel>("Hotel", hotelSchema, 'listingsAndReviews');

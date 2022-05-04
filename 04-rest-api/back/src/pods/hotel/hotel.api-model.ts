@@ -1,3 +1,6 @@
+import { Review } from "pods/review/review.api-model"
+
+
 export interface Hotel {
     _id: string
     name: string
@@ -13,9 +16,3 @@ export interface Hotel {
 }
 
 
-export interface Review {
-    _id: string
-    date: string
-    reviewer_name: string
-    comments: string
-}

@@ -1,12 +1,11 @@
-import { NumericType } from "mongodb"
 
 export interface Hotel {
-    _id: string
+    _id: string;
     name: string
     summary: string
     bedrooms: number
     beds: number
-    bathrooms: NumericType
+    bathrooms: Number // NumericType
     images: Images
     address: Address
     reviews: Review[]

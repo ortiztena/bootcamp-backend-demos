@@ -1,22 +1,17 @@
 import { HotelRepository } from "./hotel.repository";
-import { ObjectId } from "mongodb";
+
 import { hotelContext } from "../hotel.context";
 import { Hotel, Review } from "../hotel.model";
 
 export const dbRepository: HotelRepository = {
-    getHotelList: async () => {
-        return await hotelContext.find().lean();
-
-    },
-    getHotel: async (id: string) => {
-        return await hotelContext.findOne({
-            _id: new ObjectId(id)
-        }).lean();
-    },
+    getHotelList: async () => await hotelContext.find().lean(),
+    getHotel: async (id: string) =>
+        await hotelContext.findOne({ _id: id }).lean(),
     updateReview: async (id: string, review: Review) => {
         return await hotelContext.findOneAndUpdate({
-            _id: new ObjectId(id),
+            _id: id,
         },
             { $push: { reviews: review } }).lean();
     }
+
 };
