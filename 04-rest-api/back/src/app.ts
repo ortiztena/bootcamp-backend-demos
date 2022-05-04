@@ -7,6 +7,7 @@ import {
   logRequestMiddleware,
   logErrorRequestMiddleware,
 } from "common/middlewares";
+import { securityApi } from 'pods/security';
 
 
 const restApiServer = createRestApiServer();
@@ -20,6 +21,8 @@ restApiServer.use("/", express.static(staticFilesPath));
 restApiServer.use("/api/hotels", hotelsApi)
 
 restApiServer.use(logErrorRequestMiddleware);
+
+restApiServer.use('/api/security', securityApi);
 
 restApiServer.listen(envConstants.PORT, () => {
   console.log(`Server ready at port ${envConstants.PORT}`);
