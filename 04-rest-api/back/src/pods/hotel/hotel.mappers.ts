@@ -1,4 +1,5 @@
 import * as model from "dals";
+import { mapReviewListFromApiModelToModel, mapReviewListFromModelToApi } from "pods/review/review.mappers";
 import * as apiModel from "./hotel.api-model";
 
 export const mapHotelFromModelToApi = (hotel: model.Hotel): apiModel.Hotel => ({
@@ -7,16 +8,19 @@ export const mapHotelFromModelToApi = (hotel: model.Hotel): apiModel.Hotel => ({
     summary: hotel.summary,
     bedrooms: hotel.bedrooms,
     beds: hotel.beds,
-    bathrooms: hotel.bathrooms,
-    address: hotel.address,
-    reviews: hotel.reviews,
-    images: hotel.images,
+    bathrooms: Number(hotel.bathrooms),
+    country: hotel.address.country,
+    street: hotel.address.street,
+    market: hotel.address.market,
+    reviews: mapReviewListFromModelToApi(hotel.reviews),
+    images: hotel.images.picture_url,
 
 });
 
 export const mapHotelListFromModelToApi = (
     hotelList: model.Hotel[]
 ): apiModel.Hotel[] => hotelList.map(mapHotelFromModelToApi);
+
 
 export const mapHotelFromApiToModel = (hotel: apiModel.Hotel): model.Hotel => ({
     _id: hotel._id,
@@ -25,7 +29,7 @@ export const mapHotelFromApiToModel = (hotel: apiModel.Hotel): model.Hotel => ({
     bedrooms: hotel.bedrooms,
     beds: hotel.beds,
     bathrooms: hotel.bathrooms,
-    images: hotel.images.picture_url,
-    address: hotel.address,
-    reviews: hotel.reviews,
+    images: { picture_url: hotel.images },
+    address: { street: hotel.street, market: hotel.market, country: hotel.country },
+    reviews: mapReviewListFromApiModelToModel(hotel.reviews),
 });
