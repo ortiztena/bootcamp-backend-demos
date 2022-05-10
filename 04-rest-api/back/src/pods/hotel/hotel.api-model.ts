@@ -5,8 +5,10 @@ export interface Hotel {
     bedrooms: number
     beds: number
     bathrooms: number
-    images: Images
-    address: Address
+    images: string
+    country: string;
+    street: string;
+    market: string
     reviews: Review[]
 }
 
