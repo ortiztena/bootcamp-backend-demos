@@ -1,10 +1,25 @@
 import { Hotel } from './hotel';
+import { User } from './user';
+import { ObjectId } from 'mongodb';
 
 interface DB {
+    users: User[];
     hotels: Hotel[];
 }
 
 export const db: DB = {
+    users: [
+        {
+            _id: new ObjectId(),
+            email: 'admin@email.com',
+            password: 'test',
+        },
+        {
+            _id: new ObjectId(),
+            email: 'user@email.com',
+            password: 'test',
+        },
+    ],
     hotels: [
         {
             _id: "10006546",
@@ -45,7 +60,7 @@ export const db: DB = {
             _id: "10009999",
             name: "Horto flat with small garden",
             summary:
-                "One bedroom + sofa-bed in quiet and bucolic neighbourhood right next to the Botanical Garden. Small garden, outside shower, well equipped kitchen and bathroom with shower and tub. Easy for transport with many restaurants and basic facilities in the area.",
+                "One bedroom sofa-bed in quiet and bucolic neighbourhood right next to the Botanical Garden. Small garden, outside shower, well equipped kitchen and bathroom with shower and tub. Easy for transport with many restaurants and basic facilities in the area.",
             bedrooms: 1,
             beds: 2,
             bathrooms: 1,
