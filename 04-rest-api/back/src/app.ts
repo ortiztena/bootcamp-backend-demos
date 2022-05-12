@@ -7,7 +7,7 @@ import {
   logRequestMiddleware,
   logErrorRequestMiddleware,
 } from "common/middlewares";
-import { securityApi } from 'pods/security';
+import { securityApi, authenticationMiddleware } from 'pods/security';
 
 
 const restApiServer = createRestApiServer();
@@ -19,7 +19,7 @@ restApiServer.use('/api/security', securityApi);
 const staticFilesPath = path.resolve(__dirname, envConstants.STATIC_FILES_PATH);
 restApiServer.use("/", express.static(staticFilesPath));
 
-restApiServer.use("/api/hotels", hotelsApi)
+restApiServer.use("/api/hotels", authenticationMiddleware, hotelsApi)
 
 restApiServer.use(logErrorRequestMiddleware);
 

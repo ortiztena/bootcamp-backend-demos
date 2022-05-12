@@ -1,6 +1,7 @@
 import { userRepository } from 'dals';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
+import { envConstants } from 'core/constants';
 import { UserSession } from 'common-app/models';
 
 export const securityApi = Router();
@@ -14,9 +15,9 @@ securityApi.post('/login', async (req, res, next) => {
         );
 
         if (user) {
-            const userSession: UserSession = { id: user._id.toHexString() };
+            const userSession: UserSession = { id: user._id.toHexString(), role: user.role };
             const secret = 'my-secret'; // TODO: Move to env variable
-            const token = jwt.sign(userSession, secret, {
+            const token = jwt.sign(userSession, envConstants.AUTH_SECRET, {
                 expiresIn: '1h',
                 algorithm: 'HS256',
             });
