@@ -20,6 +20,6 @@ export const run = async () => {
         });
     }
 
-    await hotelContext.insertMany(db.hotels);
+    try { await hotelContext.insertMany(db.hotels); } catch (error) { console.log(error) }
     await disconnect();
 };
