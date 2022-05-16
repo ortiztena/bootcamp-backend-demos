@@ -26,4 +26,12 @@ const toObject = (id, name, surname, gender, email, picture) => ({
   picture,
 });
 
+const fromCSVextra = (csv, attrb) => {
+  const [headers, ...users] = csv.split("\n").map((x) => x.split(",", attrb));
+  return users.map((user) =>
+    Object.fromEntries(user.map((value, i) => [headers[i], value]))
+  );
+};
+
 console.log(fromCSV(data));
+console.log(fromCSVextra(data, 3));
