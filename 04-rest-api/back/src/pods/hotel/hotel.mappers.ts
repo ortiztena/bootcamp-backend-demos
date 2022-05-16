@@ -9,11 +9,9 @@ export const mapHotelFromModelToApi = (hotel: model.Hotel): apiModel.Hotel => ({
     bedrooms: hotel.bedrooms,
     beds: hotel.beds,
     bathrooms: Number(hotel.bathrooms),
-    country: hotel.address.country,
-    street: hotel.address.street,
-    market: hotel.address.market,
+    address: { country: hotel.address.country, street: hotel.address.street, market: hotel.address.market },
     reviews: mapReviewListFromModelToApi(hotel.reviews),
-    images: hotel.images.picture_url,
+    images: { picture_url: hotel.images.picture_url },
 
 });
 
@@ -28,7 +26,7 @@ export const mapHotelFromApiToModel = (hotel: apiModel.Hotel): model.Hotel => ({
     bedrooms: hotel.bedrooms,
     beds: hotel.beds,
     bathrooms: hotel.bathrooms,
-    images: { picture_url: hotel.images },
-    address: { street: hotel.street, market: hotel.market, country: hotel.country },
+    images: { picture_url: hotel.images.picture_url },
+    address: { street: hotel.address.street, market: hotel.address.market, country: hotel.address.country },
     reviews: mapReviewListFromApiModelToModel(hotel.reviews),
 });

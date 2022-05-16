@@ -8,11 +8,17 @@ export interface Hotel {
     bedrooms: number
     beds: number
     bathrooms: number
-    images: string
-    country: string;
-    street: string;
-    market: string
+    images: Images
+    address: Address
     reviews: Review[]
 }
 
+interface Images {
+    picture_url: string
+}
 
+interface Address {
+    street: string
+    market: string
+    country: string
+}
