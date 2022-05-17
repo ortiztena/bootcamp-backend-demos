@@ -35,3 +35,6 @@ const fromCSVextra = (csv, attrb) => {
 
 console.log(fromCSV(data));
 console.log(fromCSVextra(data, 3));
+console.log(fromCSVextra(data, 2)); // cada usuario tendrá sólo `id` y `name`
+console.log(fromCSVextra(data, 3)); // cada usuario tendrá sólo `id`, `name` y `surname`
+console.log(fromCSVextra(data, 4)); // cada usuario tendrá sólo `id`, `name`, `surname` y `gender`
