@@ -4,7 +4,7 @@ import * as apiModel from "./review.api-model";
 
 export const mapReviewFromModelToApi = (review: model.Review): apiModel.Review => ({
     _id: review._id,
-    date: new Date(review.date).toISOString(),
+    date: new Date(review.date),
     reviewer_name: review.reviewer_name,
     comments: review.comments
 })

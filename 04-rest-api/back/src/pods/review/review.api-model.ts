@@ -1,6 +1,6 @@
 export interface Review {
     _id: string
-    date: string
+    date: Date
     reviewer_name: string
     comments: string
 }

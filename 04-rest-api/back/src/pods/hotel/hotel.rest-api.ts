@@ -33,7 +33,7 @@ hotelsApi
         try {
             const { id } = req.params;
             const review = req.body
-            await hotelRepository.updateReview(id, review);
+            await hotelRepository.saveReview(id, review);
             res.sendStatus(204)
         } catch (error) {
             next(error);

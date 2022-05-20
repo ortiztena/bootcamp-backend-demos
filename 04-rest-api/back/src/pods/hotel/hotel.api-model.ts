@@ -6,9 +6,7 @@ export interface Hotel {
     beds: number
     bathrooms: number
     images: string
-    country: string;
-    street: string;
-    market: string
+    address: Address
     reviews: Review[]
 }
 
@@ -24,7 +22,7 @@ export interface Address {
 
 export interface Review {
     _id: string
-    date: string
+    date: Date
     reviewer_name: string
     comments: string
 }

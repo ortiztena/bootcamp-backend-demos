@@ -1,13 +1,13 @@
 import express from "express";
 import { hotelsApi } from "pods/hotel";
 import path from "path";
-import { createRestApiServer } from "core/servers";
+import { createRestApiServer, connectToDBServer, getDBInstance } from "core/servers";
 import { envConstants } from "core/constants";
 import {
   logRequestMiddleware,
   logErrorRequestMiddleware,
 } from "common/middlewares";
-import { securityApi } from 'pods/security';
+
 
 
 const restApiServer = createRestApiServer();
@@ -22,8 +22,16 @@ restApiServer.use("/api/hotels", hotelsApi)
 
 restApiServer.use(logErrorRequestMiddleware);
 
-restApiServer.use('/api/security', securityApi);
 
-restApiServer.listen(envConstants.PORT, () => {
+
+restApiServer.listen(envConstants.PORT, async () => {
+  if (!envConstants.isApiMock) {
+    await connectToDBServer(envConstants.MONGODB_URI);
+    console.log("Connected to DB");
+    const db = getDBInstance();
+    await db.collection("hotels").insertOne({ name: "Book 1" });
+  } else {
+    console.log("Running API mock");
+  }
   console.log(`Server ready at port ${envConstants.PORT}`);
 });

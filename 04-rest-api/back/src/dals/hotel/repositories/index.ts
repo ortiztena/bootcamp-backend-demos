@@ -4,7 +4,7 @@ import { envConstants } from "core/constants";
 
 
 // TODO: Create env variable
-const isApiMock = true;
+const isApiMock = envConstants.isApiMock;
 
 export const hotelRepository = envConstants.isApiMock ? mockRepository : dbRepository;
 
