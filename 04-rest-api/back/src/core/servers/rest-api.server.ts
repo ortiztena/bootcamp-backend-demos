@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { envConstants } from "../constants";
+import cookieParser from 'cookie-parser';
 
 export const createRestApiServer = () => {
     const restApiServer = express();
@@ -12,6 +13,6 @@ export const createRestApiServer = () => {
             credentials: true,
         })
     );
-
+    restApiServer.use(cookieParser())
     return restApiServer;
 };

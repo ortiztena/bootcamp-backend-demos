@@ -6,14 +6,14 @@ import * as helpers from 'common/helpers/jwt.helpers';
 
 describe('pods/security/security.middlewares specs', () => {
     describe('authenticationMiddleware specs', () => {
-        it('should return 401 when authorization header is not present', async () => {
+        it('should return 401 when it feeds authorization cookie equals undefined', async () => {
             // Arrange
             const authorization = undefined;
             const verifyJWTStub = jest
                 .spyOn(helpers, 'verifyJWT')
                 .mockRejectedValue('Not valid token');
 
-            const req = { headers: { authorization } } as Request;
+            const req = { cookies: { authorization } } as Request;
             const res = {
                 sendStatus: jest.fn() as any,
             } as Response;
@@ -37,7 +37,7 @@ describe('pods/security/security.middlewares specs', () => {
                 .mockResolvedValue(userSession);
 
 
-            const req = { headers: { authorization } } as Request;
+            const req = { cookies: { authorization } } as Request;
 
             const res = {
                 sendStatus: jest.fn() as any,

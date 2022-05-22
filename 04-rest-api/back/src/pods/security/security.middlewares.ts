@@ -9,7 +9,7 @@ export const authenticationMiddleware: RequestHandler = async (
     next
 ) => {
     try {
-        const [, token] = req.headers.authorization?.split(' ') || [];
+        const [, token] = req.cookies.authorization?.split(' ') || [];
         const userSession = await verifyJWT<UserSession>(token, envConstants.AUTH_SECRET); req.userSession = userSession;
         next();
     } catch (error) {
