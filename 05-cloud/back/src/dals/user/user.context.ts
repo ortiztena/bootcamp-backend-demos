@@ -6,6 +6,7 @@ const userSchema = new Schema({
     password: { type: Schema.Types.String, required: true },
     salt: { type: Schema.Types.String, required: true },
     role: { type: Schema.Types.String, required: true },
+    avatar: { type: Schema.Types.String, required: true },
 } as SchemaDefinition<User>);
 
 export const userContext = mongoose.model<User>('User', userSchema);
